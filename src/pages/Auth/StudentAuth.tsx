@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Users, ArrowLeft, Mail, Lock, User, Phone, CreditCard, Shield, UserCheck, Star, Sparkles, Award } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import ThemeToggle from '../../components/Common/ThemeToggle';
 
 const StudentAuth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -72,6 +73,11 @@ const StudentAuth: React.FC = () => {
 
   return (
     <div className="min-h-screen modern-gradient relative overflow-hidden">
+      {/* Theme Toggle - Fixed Position */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+      
       {/* Enhanced Background Effects */}
       <div 
         className="absolute inset-0 opacity-30 pointer-events-none"

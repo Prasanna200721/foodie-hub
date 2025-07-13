@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Clock, CheckCircle, AlertCircle, Package, X, DollarSign, Users, Package2, Crown, Shield, Coffee } from 'lucide-react';
 import Header from '../../components/Layout/Header';
 import Toast from '../../components/Common/Toast';
+import ThemeToggle from '../../components/Common/ThemeToggle';
 import { MenuItem, Order } from '../../types';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';

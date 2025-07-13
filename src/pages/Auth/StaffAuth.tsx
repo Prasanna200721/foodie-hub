@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChefHat, ArrowLeft, Mail, Lock, User, Phone, Crown, UserCheck, Award } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import ThemeToggle from '../../components/Common/ThemeToggle';
 
 const StaffAuth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -64,6 +65,11 @@ const StaffAuth: React.FC = () => {
 
   return (
     <div className="min-h-screen modern-gradient relative overflow-hidden">
+      {/* Theme Toggle - Fixed Position */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+      
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
         <div className="max-w-md w-full">
           {/* Header with Enhanced Animations */}

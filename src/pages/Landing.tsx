@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Users, ChefHat, ArrowRight, Utensils, Star, Zap, Shield, Coffee, Award, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ThemeToggle from '../components/Common/ThemeToggle';
 
 const Landing: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -43,6 +44,8 @@ const Landing: React.FC = () => {
                 <div className="text-sm text-gray-700 dark:text-gray-400 font-medium">Premium Food Ordering</div>
               </div>
             </div>
+            
+            <ThemeToggle />
           </div>
         </div>
       </header>
