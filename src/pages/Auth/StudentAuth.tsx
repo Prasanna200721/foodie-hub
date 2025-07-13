@@ -165,13 +165,6 @@ const StudentAuth: React.FC = () => {
           {/* Enhanced Form Container with Advanced Glass Morphism */}
           <div 
             className="auth-form-container rounded-2xl p-8 relative overflow-hidden border-indigo-500/30 hover-lift magnetic-hover"
-            style={{
-              transform: `translateY(${scrollY * 0.01}px)`,
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%)',
-              backdropFilter: 'blur(40px)',
-              border: '2px solid rgba(99, 102, 241, 0.2)',
-              boxShadow: '0 25px 60px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
-            }}
           >
             {/* Animated Background Pattern */}
             <div className="absolute inset-0 opacity-5">
@@ -218,16 +211,9 @@ const StudentAuth: React.FC = () => {
                       onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
                       onFocus={() => setFocusedField('fullName')}
                       onBlur={() => setFocusedField(null)}
-                      className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:scale-[1.01] group-hover:shadow-lg"
+                      className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
                       placeholder="Enter your full name"
-                      style={{
-                        transform: focusedField === 'fullName' ? 'scale(1.02) translateY(-2px)' : 'scale(1)',
-                        boxShadow: focusedField === 'fullName' ? '0 0 25px rgba(99, 102, 241, 0.3)' : '',
-                      }}
                     />
-                    {focusedField === 'fullName' && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg pointer-events-none animate-pulse" />
-                    )}
                   </div>
                 </div>
               )}
@@ -249,16 +235,9 @@ const StudentAuth: React.FC = () => {
                       onChange={(e) => setFormData(prev => ({ ...prev, registrationNumber: e.target.value }))}
                       onFocus={() => setFocusedField('registrationNumber')}
                       onBlur={() => setFocusedField(null)}
-                      className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:scale-[1.01] group-hover:shadow-lg"
+                      className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
                       placeholder="Enter your registration number"
-                      style={{
-                        transform: focusedField === 'registrationNumber' ? 'scale(1.02) translateY(-2px)' : 'scale(1)',
-                        boxShadow: focusedField === 'registrationNumber' ? '0 0 25px rgba(99, 102, 241, 0.3)' : '',
-                      }}
                     />
-                    {focusedField === 'registrationNumber' && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg pointer-events-none animate-pulse" />
-                    )}
                   </div>
                 </div>
               )}
@@ -279,16 +258,9 @@ const StudentAuth: React.FC = () => {
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     onFocus={() => setFocusedField('email')}
                     onBlur={() => setFocusedField(null)}
-                    className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:scale-[1.01] group-hover:shadow-lg"
+                    className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
                     placeholder="Enter your email address"
-                    style={{
-                      transform: focusedField === 'email' ? 'scale(1.02) translateY(-2px)' : 'scale(1)',
-                      boxShadow: focusedField === 'email' ? '0 0 25px rgba(99, 102, 241, 0.3)' : '',
-                    }}
                   />
-                  {focusedField === 'email' && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg pointer-events-none animate-pulse" />
-                  )}
                 </div>
               </div>
 
@@ -309,16 +281,9 @@ const StudentAuth: React.FC = () => {
                       onChange={(e) => setFormData(prev => ({ ...prev, mobileNumber: e.target.value }))}
                       onFocus={() => setFocusedField('mobileNumber')}
                       onBlur={() => setFocusedField(null)}
-                      className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:scale-[1.01] group-hover:shadow-lg"
+                      className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
                       placeholder="Enter your mobile number"
-                      style={{
-                        transform: focusedField === 'mobileNumber' ? 'scale(1.02) translateY(-2px)' : 'scale(1)',
-                        boxShadow: focusedField === 'mobileNumber' ? '0 0 25px rgba(99, 102, 241, 0.3)' : '',
-                      }}
                     />
-                    {focusedField === 'mobileNumber' && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg pointer-events-none animate-pulse" />
-                    )}
                   </div>
                 </div>
               )}
@@ -339,16 +304,9 @@ const StudentAuth: React.FC = () => {
                     onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                     onFocus={() => setFocusedField('password')}
                     onBlur={() => setFocusedField(null)}
-                    className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:scale-[1.01] group-hover:shadow-lg"
+                    className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
                     placeholder="Enter your password"
-                    style={{
-                      transform: focusedField === 'password' ? 'scale(1.02) translateY(-2px)' : 'scale(1)',
-                      boxShadow: focusedField === 'password' ? '0 0 25px rgba(99, 102, 241, 0.3)' : '',
-                    }}
                   />
-                  {focusedField === 'password' && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg pointer-events-none animate-pulse" />
-                  )}
                 </div>
               </div>
 
@@ -369,16 +327,9 @@ const StudentAuth: React.FC = () => {
                       onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                       onFocus={() => setFocusedField('confirmPassword')}
                       onBlur={() => setFocusedField(null)}
-                      className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:scale-[1.01] group-hover:shadow-lg"
+                      className="w-full pl-10 pr-4 py-3 modern-input rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
                       placeholder="Confirm your password"
-                      style={{
-                        transform: focusedField === 'confirmPassword' ? 'scale(1.02) translateY(-2px)' : 'scale(1)',
-                        boxShadow: focusedField === 'confirmPassword' ? '0 0 25px rgba(99, 102, 241, 0.3)' : '',
-                      }}
                     />
-                    {focusedField === 'confirmPassword' && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg pointer-events-none animate-pulse" />
-                    )}
                   </div>
                 </div>
               )}
