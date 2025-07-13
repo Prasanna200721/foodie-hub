@@ -69,7 +69,6 @@ const StudentDashboard: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const categories = ['all', 'breakfast', 'lunch', 'dinner', 'snacks', 'beverages', 'desserts'];
 
@@ -251,7 +250,6 @@ const StudentDashboard: React.FC = () => {
       await fetchCartItems();
       await fetchOrders();
       setActiveTab('orders');
-      setIsCartOpen(false);
       showToast('Order placed successfully!', 'success');
     } catch (error) {
       console.error('Error placing order:', error);
@@ -299,8 +297,8 @@ const StudentDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+      {/* Sticky Header */}
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
@@ -314,7 +312,7 @@ const StudentDashboard: React.FC = () => {
               <ThemeToggle />
               
               <button
-                onClick={() => setIsCartOpen(true)}
+                onClick={() => setActiveTab('cart')}
                 className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors"
               >
                 <ShoppingCart className="w-6 h-6" />
@@ -337,12 +335,13 @@ const StudentDashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Navigation Tabs */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      {/* Sticky Navigation Tabs */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-8">
             {[
               { id: 'menu', label: 'Menu', icon: Search },
+              { id: 'cart', label: 'Cart', icon: ShoppingCart },
               { id: 'orders', label: 'Orders', icon: Package },
               { id: 'profile', label: 'Profile', icon: User }
             ].map(({ id, label, icon: Icon }) => (
@@ -357,6 +356,11 @@ const StudentDashboard: React.FC = () => {
               >
                 <Icon className="w-5 h-5" />
                 <span>{label}</span>
+                {id === 'cart' && cartItems.length > 0 && (
+                  <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+                  </span>
+                )}
               </button>
             ))}
           </nav>
@@ -403,7 +407,7 @@ const StudentDashboard: React.FC = () => {
                   <img
                     src={item.image_url}
                     alt={item.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-56 object-cover"
                   />
                   <div className="p-4 flex flex-col flex-grow">
                     <div className="flex justify-between items-start mb-2">
@@ -442,6 +446,90 @@ const StudentDashboard: React.FC = () => {
                 <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No items found</h3>
                 <p className="text-gray-500 dark:text-gray-400">Try adjusting your search or filter criteria</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Cart Tab */}
+        {activeTab === 'cart' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Your Cart</h2>
+
+            {cartItems.length === 0 ? (
+              <div className="text-center py-12">
+                <ShoppingCart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Your cart is empty</h3>
+                <p className="text-gray-500 dark:text-gray-400">Add some delicious items from the menu</p>
+                <button
+                  onClick={() => setActiveTab('menu')}
+                  className="mt-4 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg transition-colors"
+                >
+                  Browse Menu
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  {cartItems.map((item) => (
+                    <div key={item.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                      <div className="flex items-center space-x-4">
+                        <img
+                          src={item.menu_items.image_url}
+                          alt={item.menu_items.name}
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{item.menu_items.name}</h3>
+                          <p className="text-gray-600 dark:text-gray-300">₹{item.menu_items.price} each</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">{item.menu_items.canteen_name}</p>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <button
+                            onClick={() => updateCartQuantity(item.id, item.quantity - 1)}
+                            className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                          >
+                            <Minus className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                          </button>
+                          <span className="text-lg font-semibold text-gray-900 dark:text-white w-8 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => updateCartQuantity(item.id, item.quantity + 1)}
+                            className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                          >
+                            <Plus className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                          </button>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-lg font-bold text-gray-900 dark:text-white">
+                            ₹{(item.menu_items.price * item.quantity).toFixed(2)}
+                          </p>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                  <div className="flex justify-between items-center text-xl font-bold mb-4">
+                    <span className="text-gray-900 dark:text-white">Total:</span>
+                    <span className="text-orange-600 dark:text-orange-400">
+                      ₹{cartItems.reduce((sum, item) => sum + (item.menu_items.price * item.quantity), 0).toFixed(2)}
+                    </span>
+                  </div>
+                  <button
+                    onClick={placeOrder}
+                    className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <CreditCard className="w-5 h-5" />
+                    <span>Place Order</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -603,101 +691,6 @@ const StudentDashboard: React.FC = () => {
           </div>
         )}
       </main>
-
-      {/* Cart Slide Panel */}
-      {isCartOpen && (
-        <div className="fixed inset-0 z-50 overflow-hidden">
-          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setIsCartOpen(false)} />
-          <div className="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 ease-in-out">
-            <div className="flex flex-col h-full">
-              {/* Cart Header */}
-              <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Your Cart</h2>
-                <button
-                  onClick={() => setIsCartOpen(false)}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                </button>
-              </div>
-
-              {/* Cart Content */}
-              <div className="flex-1 overflow-y-auto p-4">
-                {cartItems.length === 0 ? (
-                  <div className="text-center py-12">
-                    <ShoppingCart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Your cart is empty</h3>
-                    <p className="text-gray-500 dark:text-gray-400">Add some delicious items from the menu</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {cartItems.map((item) => (
-                      <div key={item.id} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                        <div className="flex items-center space-x-3">
-                          <img
-                            src={item.menu_items.image_url}
-                            alt={item.menu_items.name}
-                            className="w-12 h-12 object-cover rounded-lg"
-                          />
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 dark:text-white">{item.menu_items.name}</h3>
-                            <p className="text-gray-600 dark:text-gray-300">₹{item.menu_items.price} each</p>
-                          </div>
-                          <button
-                            onClick={() => removeFromCart(item.id)}
-                            className="p-1 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
-                          </button>
-                        </div>
-                        <div className="flex items-center justify-between mt-3">
-                          <div className="flex items-center space-x-2">
-                            <button
-                              onClick={() => updateCartQuantity(item.id, item.quantity - 1)}
-                              className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
-                            >
-                              <Minus className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-                            </button>
-                            <span className="text-lg font-semibold text-gray-900 dark:text-white w-8 text-center">{item.quantity}</span>
-                            <button
-                              onClick={() => updateCartQuantity(item.id, item.quantity + 1)}
-                              className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
-                            >
-                              <Plus className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-                            </button>
-                          </div>
-                          <span className="font-bold text-gray-900 dark:text-white">
-                            ₹{(item.menu_items.price * item.quantity).toFixed(2)}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Cart Footer */}
-              {cartItems.length > 0 && (
-                <div className="border-t border-gray-200 dark:border-gray-700 p-4 space-y-4">
-                  <div className="flex justify-between items-center text-lg font-bold">
-                    <span className="text-gray-900 dark:text-white">Total:</span>
-                    <span className="text-orange-600 dark:text-orange-400">
-                      ₹{cartItems.reduce((sum, item) => sum + (item.menu_items.price * item.quantity), 0).toFixed(2)}
-                    </span>
-                  </div>
-                  <button
-                    onClick={placeOrder}
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition-colors flex items-center justify-center space-x-2"
-                  >
-                    <CreditCard className="w-5 h-5" />
-                    <span>Place Order</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Toast */}
       {toast && (
